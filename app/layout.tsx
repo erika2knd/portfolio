@@ -1,27 +1,26 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import { Sora } from "next/font/google";
 import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
 
-export const metadata: Metadata = {
-  title: "Erika — Junior Web Developer",
-  description: "Personal portfolio showcasing selected web projects.",
-};
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sora",
+});
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>
-        <div className="min-h-screen bg-[#F6F5F2] text-neutral-900">
-          <Header />
-          {children}
-          <Footer />
-        </div>
+      <body className={`${sora.variable} antialiased`}>
+        <Header />
+        {children}
       </body>
     </html>
   );
 }
+
+
