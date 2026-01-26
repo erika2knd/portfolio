@@ -1,28 +1,31 @@
-import Header from "../layout/Header";
+import SectionWrapper from "../layout/SectionWrapper";
 
 export default function Hero() {
   return (
-    <section id="work" className="relative">
-      <Header />
+    <section id="hero" className="pt-36">
+      <SectionWrapper>
+        <div className="flex min-h-[72vh] flex-col items-center justify-center text-center">
+          <h1 className="text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">
+            Hello, I am Erika
+          </h1>
 
-      <div className="mx-auto flex min-h-[70vh] max-w-7xl flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-5xl font-semibold tracking-tight md:text-7xl">
-    Hello, I’m Erika
-  </h1>
+          <p className="mx-auto mt-14 max-w-[720px] text-lg font-medium leading-[1.6] text-white/75 md:text-xl">
+            Junior Web Developer crafting modern, responsive web applications with React,
+            Next.js and clean UI.
+          </p>
 
-  <p className="mt-16 max-w-2xl text-base leading-[1.65] text-white/70 md:text-lg">
-    Frontend Developer crafting clean, modern interfaces with React & Next.js
-  </p>
-
-        <a
-          href="#projects"
-          className="mt-14 inline-flex rounded-full border border-white/30 px-10 py-3 text-sm transition hover:border-white"
-        >
-          See Projects
-        </a>
-      </div>
+          <button
+            type="button"
+            onClick={() =>
+              document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="btn mt-10"
+          >
+            <span>See Projects</span>
+          </button>
+        </div>
+      </SectionWrapper>
     </section>
   );
 }
-
 

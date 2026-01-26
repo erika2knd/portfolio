@@ -14,20 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-[#0B0B0F] text-white">
-        {/* Global background (whole site) */}
         <div className="fixed inset-0 -z-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "url(images/bg.png)", 
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
-          {/* overlays */}
-          <div className="absolute inset-0 bg-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-[#0B0B0F]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-black" />
         </div>
 
         {children}
@@ -35,5 +24,4 @@ export default function RootLayout({
     </html>
   );
 }
-
 
