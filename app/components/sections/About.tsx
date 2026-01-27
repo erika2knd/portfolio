@@ -72,11 +72,14 @@ export default function About() {
     </a>
 
     <a
-      href="#contact"
-      className="text-sm font-medium text-white/70 transition hover:text-white"
-    >
-      Or contact me →
-    </a>
+  href="https://github.com/your-github-username"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-sm font-medium text-white/70 transition hover:text-white"
+>
+  View GitHub profile →
+</a>
+
   </div>
 </div>
 
@@ -84,16 +87,25 @@ export default function About() {
 
           {/* Right image (sticky on desktop) */}
           <div className="flex justify-start md:justify-end">
-            <div className="md:sticky md:top-28 w-full max-w-[320px] overflow-hidden rounded-3xl border border-white/25 bg-white/[0.03]">
-              <Image
-                src="/images/about.jpg"
-                alt="Erika portrait"
-                width={900}
-                height={1100}
-                className="h-auto w-full object-cover"
-              />
-            </div>
-          </div>
+  <div className="
+    w-full
+    overflow-hidden
+    rounded-3xl
+    border border-white/25
+    bg-white/[0.03]
+    md:sticky md:top-28
+    md:max-w-[320px]
+  ">
+    <Image
+      src="/images/about.jpg"
+      alt="Erika portrait"
+      width={900}
+      height={1100}
+      className="h-auto w-full object-cover"
+    />
+  </div>
+</div>
+
         </div>
 
         {/* BOTTOM: chips instead of comma text */}
@@ -118,7 +130,7 @@ function Block({ label, items }: { label: string; items: string[] }) {
         {items.map((item) => (
           <span
             key={item}
-            className="rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-sm text-white/75 transition hover:border-white/25 hover:text-white"
+            className="rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-sm text-white/75"
           >
             {item}
           </span>

@@ -16,7 +16,7 @@ export default function Footer() {
           </h2>
 
           <p className="mt-6 text-base leading-relaxed text-white/70 md:text-lg">
-            I’m currently open to junior frontend positions.
+            I’m currently open to junior web developer positions.
             Feel free to reach out if you’d like to collaborate.
           </p>
 
@@ -29,7 +29,7 @@ export default function Footer() {
         </div>
 
         {/* divider */}
-        <div className="mt-24 h-px w-full bg-white/15" />
+        <div className="mt-64 h-px w-full bg-white/15" />
 
         {/* BOTTOM FOOTER */}
         <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">

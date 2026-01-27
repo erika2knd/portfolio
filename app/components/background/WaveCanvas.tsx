@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 
 /**
  * Small Perlin-like noise implementation (classic noise).
- * Lightweight and good for background waves.
  */
 class ClassicalNoise {
   private perm: number[] = [];
@@ -116,13 +115,16 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
     let w = 0;
     let h = 0;
 
-    // Tune for performance
+    // Tune for performance / look
     const variation = 0.0025;
     const ampBase = 260;
+    const maxLinesDesktop = 40;
+    const maxLinesMobile = 18;
 
-    // more lines = more visible (but heavier)
-    const maxLinesDesktop = 48;
-    const maxLinesMobile = 26;
+    // Frame limiting 
+    const FPS = 30;
+    const frameInterval = 1000 / FPS;
+    let lastTime = 0;
 
     let variators: number[] = [];
     let startY = 0;
@@ -147,7 +149,20 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
       variators = Array.from({ length: maxLines + 1 }, (_, i) => i * 0.02);
     };
 
-    const draw = () => {
+    const draw = (time = 0) => {
+      // stop drawing when tab is hidden
+      if (document.hidden) {
+        raf = window.requestAnimationFrame(draw);
+        return;
+      }
+
+      // limit FPS
+      if (time - lastTime < frameInterval) {
+        raf = window.requestAnimationFrame(draw);
+        return;
+      }
+      lastTime = time;
+
       ctx.clearRect(0, 0, w, h);
 
       const isMobile = w < 768;
@@ -157,24 +172,25 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
       ctx.shadowColor = "rgba(255,255,255,0.35)";
       ctx.shadowBlur = isMobile ? 0 : 18;
 
+      // draw fewer points across the width (huge perf win)
+      const step = isMobile ? 3 : 2;
+
       for (let i = 0; i < variators.length; i++) {
         ctx.beginPath();
         ctx.moveTo(0, startY);
 
         let yVal = 0;
 
-        for (let x = 0; x <= w; x++) {
+        for (let x = 0; x <= w; x += step) {
           yVal = perlin.noise(x * variation + variators[i], x * variation, 0);
           ctx.lineTo(x, startY + amp * yVal);
         }
 
-        // brighter alpha + thicker lines
-        const alpha = Math.min(Math.abs(yVal) + 0.12, 0.28); // max ~0.28
+        const alpha = Math.min(Math.abs(yVal) + 0.12, 0.28);
         ctx.lineWidth = isMobile ? 1.4 : 2.0;
         ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
 
         ctx.stroke();
-        ctx.closePath();
 
         variators[i] += 0.005;
       }
@@ -183,19 +199,30 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
     };
 
     setup();
-    draw();
+    raf = window.requestAnimationFrame(draw);
 
     const onResize = () => {
       window.cancelAnimationFrame(raf);
+      lastTime = 0;
       setup();
-      draw();
+      raf = window.requestAnimationFrame(draw);
+    };
+
+    const onVisibilityChange = () => {
+      lastTime = 0;
+      if (!document.hidden) {
+        window.cancelAnimationFrame(raf);
+        raf = window.requestAnimationFrame(draw);
+      }
     };
 
     window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       window.cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 

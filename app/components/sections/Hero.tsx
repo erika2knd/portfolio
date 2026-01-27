@@ -2,7 +2,7 @@ import SectionWrapper from "../layout/SectionWrapper";
 
 export default function Hero() {
   return (
-    <section id="hero" className="pt-36">
+    <section id="hero" className="relative pt-36">
       <SectionWrapper>
         <div className="flex min-h-[72vh] flex-col items-center justify-center text-center">
           <h1 className="text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">
@@ -17,7 +17,9 @@ export default function Hero() {
           <button
             type="button"
             onClick={() =>
-              document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+              document
+                .getElementById("projects")
+                ?.scrollIntoView({ behavior: "smooth" })
             }
             className="btn mt-10"
           >
@@ -25,6 +27,31 @@ export default function Hero() {
           </button>
         </div>
       </SectionWrapper>
+
+      {/* Scroll down arrow */}
+      <button
+        type="button"
+        aria-label="Scroll to projects"
+        onClick={() =>
+          document
+            .getElementById("projects")
+            ?.scrollIntoView({ behavior: "smooth" })
+        }
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70 transition hover:text-white animate-bounce"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
     </section>
   );
 }

@@ -87,3 +87,36 @@ video {
   position: relative;
   z-index: 1;
 }
+
+/* smaller button (for header) */
+.btn--sm {
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+/* inverse button (white -> black) */
+.btn.btn--inverse {
+  color: black;
+  background: white;
+  border-color: white;
+
+}
+
+.btn.btn--inverse > span {
+  font-weight: 600;
+}
+
+.btn.btn--inverse::before {
+  background: black;
+  transform: translateX(-110%);
+}
+
+/* IMPORTANT: override base .btn:hover */
+.btn.btn--inverse:hover {
+  color: white;
+  border-color: white;
+}
+
+.btn.btn--inverse:hover::before {
+  transform: translateX(0%);
+}

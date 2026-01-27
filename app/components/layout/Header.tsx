@@ -12,6 +12,8 @@ const navItems = [
   { label: "Contact", href: "#contact", id: "contact" },
 ];
 
+const CV_URL = "/cv/Erika_Kondratjeva_CV.pdf";
+
 export default function Header() {
   const sectionIds = useMemo(() => navItems.map((n) => n.id), []);
   const activeId = useActiveSection(sectionIds);
@@ -40,64 +42,88 @@ export default function Header() {
       <SectionWrapper>
         <div
           className={[
-            "flex items-center justify-between rounded-full border px-6 sm:px-10 py-3",
+            "rounded-full border px-6 sm:px-10 py-3",
             "transition-all duration-200",
             isScrolled
               ? "border-white/30 bg-black/40 backdrop-blur shadow-[0_0_0_1px_rgba(255,255,255,0.06)]"
               : "border-white/40 bg-black/10 backdrop-blur",
           ].join(" ")}
         >
-          {/* Logo */}
-          <Link
-  href="#hero"
-  aria-label="Go to top"
-  scroll={true}
-  className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
->
-  <Image
-    src="/images/logo.png"
-    alt="Erika logo"
-    width={200}
-    height={28}
-    priority
-    className="h-6 w-auto transition duration-200 hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]"
-  />
-</Link>
+          {/* 3-column layout */}
+          <div className="grid grid-cols-[auto_1fr_auto] items-center">
+            {/* Left: Logo */}
+            <Link
+              href="#hero"
+              aria-label="Go to top"
+              scroll={true}
+              className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
+            >
+              <Image
+                src="/images/logo.png"
+                alt="Erika logo"
+                width={200}
+                height={28}
+                priority
+                className="h-6 w-auto transition duration-200 hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]"
+              />
+            </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-10 text-sm text-white/70">
-            {navItems.map((item) => {
-              const isActive = activeId === item.id;
+            {/* Center: Desktop Nav */}
+            <nav className="hidden md:flex justify-center items-center gap-10 text-sm text-white/70">
+              {navItems.map((item) => {
+                const isActive = activeId === item.id;
 
-              return (
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive ? "page" : undefined}
+                    className={[
+                      "relative rounded-sm transition-colors duration-200 focus:outline-none",
+                      "focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
+                      isActive ? "text-white" : "hover:text-white",
+                      "after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:bg-white/70 after:transition-all after:duration-200",
+                      isActive ? "after:w-full" : "after:w-0 hover:after:w-full",
+                    ].join(" ")}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+            </nav>
+
+            {/* Right: Desktop Buttons + Mobile Menu Button */}
+            <div className="flex items-center justify-end gap-3">
+              {/* Desktop buttons */}
+              <div className="hidden md:flex items-center gap-3">
                 <a
-                  key={item.href}
-                  href={item.href}
-                  aria-current={isActive ? "page" : undefined}
-                  className={[
-                    "relative rounded-sm transition-colors duration-200 focus:outline-none",
-                    "focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
-                    isActive ? "text-white" : "hover:text-white",
-                    "after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:bg-white/70 after:transition-all after:duration-200",
-                    isActive ? "after:w-full" : "after:w-0 hover:after:w-full",
-                  ].join(" ")}
+                  href={CV_URL}
+                  download
+                  className="btn btn--sm"
                 >
-                  {item.label}
+                  <span>Download CV</span>
                 </a>
-              );
-            })}
-          </nav>
 
-          {/* Mobile Button */}
-          <button
-            type="button"
-            aria-label="Open menu"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
-            className="md:hidden inline-flex items-center justify-center rounded-full border border-white/30 px-4 py-2 text-sm text-white/80 hover:text-white transition"
-          >
-            {menuOpen ? "Close" : "Menu"}
-          </button>
+                <a
+                  href="mailto:erikakondratjeva@gmail.com"
+                  className="btn btn--sm btn--inverse"
+                >
+                  <span>Contact me</span>
+                </a>
+              </div>
+
+              {/* Mobile Button */}
+              <button
+                type="button"
+                aria-label="Open menu"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((v) => !v)}
+                className="md:hidden inline-flex items-center justify-center rounded-full border border-white/30 px-4 py-2 text-sm text-white/80 hover:text-white transition"
+              >
+                {menuOpen ? "Close" : "Menu"}
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -124,6 +150,21 @@ export default function Header() {
                 );
               })}
             </nav>
+
+            {/* Mobile buttons */}
+            <div className="mt-4 grid gap-2">
+              <a href={CV_URL} download className="btn" onClick={closeMenu}>
+                <span>Download CV</span>
+              </a>
+
+              <a
+                href="mailto:erikakondratjeva@gmail.com"
+                className="btn"
+                onClick={closeMenu}
+              >
+                <span>Contact me</span>
+              </a>
+            </div>
           </div>
         )}
       </SectionWrapper>
