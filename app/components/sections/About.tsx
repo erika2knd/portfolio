@@ -48,25 +48,45 @@ export default function About() {
             </h3>
 
             <div className="pt-10 max-w-[620px] space-y-8">
-              <p className="text-base leading-[1.85] text-white/70 md:text-lg">
-                I’m a Junior Web Developer focused on building modern, responsive web
-                applications. I enjoy working on clean UI, structured layouts, and turning
-                designs into functional, real products.
-              </p>
-              <p className="text-base leading-[1.85] text-white/70 md:text-lg">
-                Through hands-on pet projects, I’ve gained practical experience with React,
-                Next.js, authentication, APIs, and deployment. I’m currently looking for a
-                junior position where I can grow as a developer and contribute to real-world
-                products.
-              </p>
-            </div>
+  <p className="text-base leading-[1.85] text-white/70 md:text-lg">
+    I’m a Junior Web Developer focused on building modern, responsive web
+    applications. I enjoy working on clean UI, structured layouts, and turning
+    designs into functional, real products.
+  </p>
+
+  <p className="text-base leading-[1.85] text-white/70 md:text-lg">
+    Through hands-on pet projects, I’ve gained practical experience with React,
+    Next.js, authentication, APIs, and deployment. I’m currently looking for a
+    junior position where I can grow as a developer and contribute to real-world
+    products.
+  </p>
+
+  {/* CTA buttons */}
+  <div className="flex flex-wrap items-center gap-6 pt-6">
+    <a
+      href="/cv/Erika_Kondratjeva_CV.pdf"
+      download
+      className="btn"
+    >
+      <span>Download CV</span>
+    </a>
+
+    <a
+      href="#contact"
+      className="text-sm font-medium text-white/70 transition hover:text-white"
+    >
+      Or contact me →
+    </a>
+  </div>
+</div>
+
           </div>
 
           {/* Right image (sticky on desktop) */}
           <div className="flex justify-start md:justify-end">
             <div className="md:sticky md:top-28 w-full max-w-[320px] overflow-hidden rounded-3xl border border-white/25 bg-white/[0.03]">
               <Image
-                src="/images/about.png"
+                src="/images/about.jpg"
                 alt="Erika portrait"
                 width={900}
                 height={1100}

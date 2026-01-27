@@ -49,19 +49,20 @@ export default function Header() {
         >
           {/* Logo */}
           <Link
-            href="/"
-            aria-label="Go to homepage"
-            className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
-          >
-            <Image
-              src="/logo.png"
-              alt="Erika logo"
-              width={200}
-              height={28}
-              priority
-              className="h-6 w-auto transition duration-200 hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]"
-            />
-          </Link>
+  href="#hero"
+  aria-label="Go to top"
+  scroll={true}
+  className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
+>
+  <Image
+    src="/images/logo.png"
+    alt="Erika logo"
+    width={200}
+    height={28}
+    priority
+    className="h-6 w-auto transition duration-200 hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]"
+  />
+</Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-10 text-sm text-white/70">
