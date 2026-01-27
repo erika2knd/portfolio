@@ -159,7 +159,7 @@ export default function Header() {
 
               <a
                 href="mailto:erikakondratjeva@gmail.com"
-                className="btn"
+                className="btn btn--inverse"
                 onClick={closeMenu}
               >
                 <span>Contact me</span>

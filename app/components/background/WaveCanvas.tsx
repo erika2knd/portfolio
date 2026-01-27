@@ -246,7 +246,7 @@ export default function WaveCanvas({
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, []); // ✅ always constant
+  }, []); 
 
   return (
     <canvas
