@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 /**
  * Small Perlin-like noise implementation (classic noise).
+ * Lightweight and good for background waves.
  */
 class ClassicalNoise {
   private perm: number[] = [];
@@ -89,13 +90,24 @@ class ClassicalNoise {
 type Props = {
   className?: string;
   opacity?: number; // 0..1
+  /** Stop animating after scrolling past ~1.2 viewport heights (saves a lot on Chrome) */
+  stopAfterHero?: boolean;
 };
 
-export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
+export default function WaveCanvas({
+  className = "",
+  opacity = 0.95,
+  stopAfterHero = true,
+}: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // Keep latest prop without changing main effect deps
+  const stopAfterHeroRef = useRef(stopAfterHero);
   useEffect(() => {
-    // Respect reduced motion
+    stopAfterHeroRef.current = stopAfterHero;
+  }, [stopAfterHero]);
+
+  useEffect(() => {
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia &&
@@ -109,20 +121,24 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
+    const isChrome = /Chrome/.test(ua) && !/Edg/.test(ua) && !/OPR/.test(ua);
+    const isSafari = /Safari/.test(ua) && !/Chrome/.test(ua);
+    const heavyBrowser = isChrome && !isSafari;
+
     const perlin = new ClassicalNoise();
 
     let raf = 0;
     let w = 0;
     let h = 0;
 
-    // Tune for performance / look
     const variation = 0.0025;
     const ampBase = 260;
-    const maxLinesDesktop = 40;
-    const maxLinesMobile = 18;
 
-    // Frame limiting 
-    const FPS = 30;
+    const maxLinesDesktop = heavyBrowser ? 28 : 40;
+    const maxLinesMobile = heavyBrowser ? 14 : 18;
+
+    const FPS = heavyBrowser ? 20 : 30;
     const frameInterval = 1000 / FPS;
     let lastTime = 0;
 
@@ -130,7 +146,7 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
     let startY = 0;
 
     const setup = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2); // cap DPR
+      const dpr = Math.min(window.devicePixelRatio || 1, heavyBrowser ? 1.5 : 2);
       w = Math.floor(window.innerWidth);
       h = Math.floor(window.innerHeight);
 
@@ -145,18 +161,23 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
 
       const isMobile = w < 768;
       const maxLines = isMobile ? maxLinesMobile : maxLinesDesktop;
-
       variators = Array.from({ length: maxLines + 1 }, (_, i) => i * 0.02);
     };
 
     const draw = (time = 0) => {
-      // stop drawing when tab is hidden
       if (document.hidden) {
         raf = window.requestAnimationFrame(draw);
         return;
       }
 
-      // limit FPS
+      if (stopAfterHeroRef.current) {
+        const stopAt = window.innerHeight * 1.2;
+        if (window.scrollY > stopAt) {
+          raf = window.requestAnimationFrame(draw);
+          return;
+        }
+      }
+
       if (time - lastTime < frameInterval) {
         raf = window.requestAnimationFrame(draw);
         return;
@@ -168,12 +189,14 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
       const isMobile = w < 768;
       const amp = isMobile ? ampBase * 0.7 : ampBase;
 
-      // subtle glow (desktop only)
-      ctx.shadowColor = "rgba(255,255,255,0.35)";
-      ctx.shadowBlur = isMobile ? 0 : 18;
+      if (heavyBrowser) {
+        ctx.shadowBlur = 0;
+      } else {
+        ctx.shadowColor = "rgba(255,255,255,0.35)";
+        ctx.shadowBlur = isMobile ? 0 : 18;
+      }
 
-      // draw fewer points across the width (huge perf win)
-      const step = isMobile ? 3 : 2;
+      const step = isMobile ? (heavyBrowser ? 4 : 3) : heavyBrowser ? 3 : 2;
 
       for (let i = 0; i < variators.length; i++) {
         ctx.beginPath();
@@ -191,7 +214,6 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
         ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
 
         ctx.stroke();
-
         variators[i] += 0.005;
       }
 
@@ -216,7 +238,7 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
       }
     };
 
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
@@ -224,7 +246,7 @@ export default function WaveCanvas({ className = "", opacity = 0.95 }: Props) {
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, []);
+  }, []); // ✅ always constant
 
   return (
     <canvas
