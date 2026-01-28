@@ -52,21 +52,26 @@ export default function Header() {
           {/* 3-column layout */}
           <div className="grid grid-cols-[auto_1fr_auto] items-center">
             {/* Left: Logo */}
-            <Link
-              href="#hero"
-              aria-label="Go to top"
-              scroll={true}
-              className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
-            >
-              <Image
-                src="/images/logo.png"
-                alt="Erika logo"
-                width={200}
-                height={28}
-                priority
-                className="h-6 w-auto transition duration-200 hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]"
-              />
-            </Link>
+            <button
+  type="button"
+  aria-label="Go to top"
+  onClick={() => {
+    setMenuOpen(false);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    history.replaceState(null, "", window.location.pathname);
+  }}
+  className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
+>
+  <Image
+    src="/images/logo.png"
+    alt="Erika logo"
+    width={200}
+    height={28}
+    priority
+    className="h-6 w-auto transition duration-200 hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]"
+  />
+</button>
 
             {/* Center: Desktop Nav */}
             <nav className="hidden md:flex justify-center items-center gap-10 text-sm text-white/70">
