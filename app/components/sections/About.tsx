@@ -64,7 +64,7 @@ export default function About() {
   {/* CTA buttons */}
   <div className="flex flex-wrap items-center gap-6 pt-6">
     <a
-      href="/cv/Erika_Kondratjeva_CV.pdf"
+      href="/cv/Erika_Kondratjeva_CV.pdf.pdf"
       download
       className="btn"
     >

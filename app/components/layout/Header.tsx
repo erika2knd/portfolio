@@ -12,7 +12,7 @@ const navItems = [
   { label: "Contact", href: "#contact", id: "contact" },
 ];
 
-const CV_URL = "/cv/Erika_Kondratjeva_CV.pdf";
+const CV_URL = "/cv/Erika_Kondratjeva_CV.pdf.pdf";
 
 export default function Header() {
   const sectionIds = useMemo(() => navItems.map((n) => n.id), []);
