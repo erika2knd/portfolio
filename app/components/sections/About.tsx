@@ -72,7 +72,7 @@ export default function About() {
     </a>
 
     <a
-  href="https://github.com/your-github-username"
+  href="https://github.com/erika2knd"
   target="_blank"
   rel="noopener noreferrer"
   className="text-sm font-medium text-white/70 transition hover:text-white"
